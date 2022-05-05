@@ -1,0 +1,1 @@
+document.getElementById("computer-choice")
