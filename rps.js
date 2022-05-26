@@ -1,80 +1,56 @@
-let computerChoiceDisplay = document.getElementById("computer-choice");
-let resultDisplay = document.getElementById("result");
-let roundsDisplay = document.getElementById("rounds");
-const userChoiceDisplay = document.getElementById("user-choice");
-const possibleChoices = document.querySelectorAll("button");
+const resultDisplay = document.querySelector('#result')
+const choicesDisplay = document.querySelector('#choices')
+let computerPoints = document.querySelector('#compScoreDisplay')
+let playerPoints = document.querySelector('#playerScoreDisplay')
+let winner = document.querySelector('#winnerDisplay')
+const choices = ['Rock', 'Paper', 'Scissors']
 
+let playerScore = 0;
+let computerScore = 0;
 
-
-
-let userChoice;
-const options = ["Rock", "Paper", "Scissors"];
-let computerChoice;
-let result;
-
-possibleChoices.forEach((possibleChoice) =>
-  possibleChoice.addEventListener("click", (e) => {
-    userChoice = e.target.id;
-    userChoiceDisplay.innerHTML = userChoice;
-
-    computerPlay();
-    playRound();
-  })
-);
-
-function computerPlay() {
-  const randomChoice = options[Math.floor(Math.random() * options.length)];
-  computerChoice = randomChoice;
-  computerChoiceDisplay.innerHTML = computerChoice;
-  
+const handleClick = (e) => {
+  getResults(e.target.innerHTML, choices[Math.floor(Math.random() * choices.length)])
+  game()
 }
 
-// function decideWinner() {
-//   if (computerChoice === "Rock" && userChoice === "paper") {
-//     result = "You win";
-//   }
-//   if (computerChoice === "Paper" && userChoice === "scissors") {
-//     result = "You win";
-//   }
-//   if (computerChoice === "Scissors" && userChoice === "rock") {
-//     result = "You win";
-//   }
-//   if (computerChoice === "Rock" && userChoice === "scissors") {
-//     result = "You lose";
-//   }
-//   if (computerChoice === "Paper" && userChoice === "rock") {
-//     result = "You lose";
-//   }
-//   if (computerChoice === "Scissors" && userChoice === "paper") {
-//     result = "You lose";
-//   }
-//   if (computerChoice === userChoice) {
-//     result = "its a draw";
-//   }
-//   resultDisplay.innerHTML = result;
-// }
+choices.forEach(choice => {
+  const button = document.createElement('button')
+  button.innerHTML = choice
+  button.addEventListener('click', handleClick)
+  choicesDisplay.appendChild(button)
+})
 
-const playRound = () => {
-  switch (userChoice + computerChoice) {
-    case "scissorsPaper":
-    case "rockScissors":
-    case "paperRock":
-      resultDisplay.innerHTML = "You win!";
-      break;
-    case "scissorsRock":
-    case "rockPaper":
-    case "paperScissors":
-      resultDisplay.innerHTML = "You lose";
-      break;
-    case "scissorsScissors":
-    case "paperPaper":
-    case "rockRock":
-      resultDisplay.innerHTML = "It's a draw.";
+const getResults = (userChoice, computerChoice) => {
+    switch (userChoice + computerChoice) {
+      case "RockScissors":
+      case "PaperRock":
+      case "ScisssorsPaper":
+        resultDisplay.textContent = `Round winner: User! ${userChoice} beats ${computerChoice}. +1 point to the Player.`
+        playerScore = ++playerScore
+        playerPoints.textContent = `${playerScore}`
+        break
+      case "ScissorsRock":
+      case "RockPaper":
+      case "PaperScisssors":
+        resultDisplay.textContent = `Round winner: Computer! ${computerChoice} beats ${userChoice}. +1 point to the Computer.`
+        computerScore = ++computerScore
+        computerPoints.textContent = `${computerScore}`
+        break
+      case "ScissorsScissors":
+      case "RockRock":
+      case "PaperPaper": 
+        resultDisplay.textContent = 'Draw. No points shall be rewarded. haha'
+        break
+    }
+}
+
+const game = () => {
+  if(computerScore >= 5) {
+    winner.textContent = "You lose. Try again :(.";
+    choicesDisplay.style.display = 'none';
+  } 
+  if (playerScore >= 5) {
+    winner.textContent = "You win :). Suck it computer."
+    choicesDisplay.style.display = 'none';
   }
-};
-
-
-for (i =0; i < 100; i++) {
-    roundsDisplay.innerHTML = i;
-    
 }
