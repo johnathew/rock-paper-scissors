@@ -46,7 +46,7 @@ const getResults = (userChoice, computerChoice) => {
 
 const game = () => {
   if(computerScore >= 5) {
-    winner.textContent = "You lose. Try again :(.";
+    winner.textContent = "Computer wonnered. Try again :(.";
     choicesDisplay.style.display = 'none';
   } 
   if (playerScore >= 5) {
